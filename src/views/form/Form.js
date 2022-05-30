@@ -1,67 +1,72 @@
 import React, { Component } from 'react';
 
-import JobList from './JobList';
-
 class Form extends Component {
     state = {
-        firstName: '',
-        lastName: '',
-        jobList: [
-            { id: 123, title: 'front-end', salary: '1000$' },
-            { id: 456, title: 'back-end', salary: '1200$' },
-            { id: 789, title: 'testers', salary: '500$' },
-        ],
+        title: '',
+        salary: '',
     };
 
-    handleFirstName(event) {
+    handleChangeTitle(event) {
         this.setState({
-            firstName: event.target.value,
+            title: event.target.value,
         });
     }
 
-    handleLastName(event) {
+    handleChangeSalary(event) {
         this.setState({
-            lastName: event.target.value,
+            salary: event.target.value,
         });
     }
 
-    handleSubmit(event) {
+    handleAddNewJob(event) {
         event.preventDefault();
-        alert(`Hello ${this.state.firstName} ${this.state.lastName}`);
+        if (!this.state.title || !this.state.salary) {
+            alert(`missing require`);
+            return;
+        }
+
+        this.props.addJob({
+            id: Math.floor(Math.random() * 1000),
+            title: this.state.title,
+            salary: this.state.salary,
+        });
+
+        this.setState({
+            title: '',
+            salary: '',
+        });
     }
 
     render() {
-        const { firstName, lastName, jobList } = this.state;
+        const { title, salary } = this.state;
 
         return (
             <>
                 <form>
-                    <label htmlFor="fname">First name:</label>
+                    <label htmlFor="fname">Job title:</label>
                     <br />
                     <input
                         type="text"
-                        value={firstName}
-                        onChange={(event) => this.handleFirstName(event)}
+                        value={title}
+                        onChange={(event) => this.handleChangeTitle(event)}
                     />
                     <br />
-                    <label htmlFor="lname">Last name:</label>
+                    <label htmlFor="lname">Salary:</label>
                     <br />
                     <input
                         type="text"
-                        value={lastName}
-                        onChange={(event) => this.handleLastName(event)}
+                        value={salary}
+                        onChange={(event) => this.handleChangeSalary(event)}
                     />
                     <br />
                     <br />
                     <input
                         type="submit"
-                        value="Submit"
-                        onClick={(event) => this.handleSubmit(event)}
+                        value="Add New job"
+                        onClick={(event) => this.handleAddNewJob(event)}
                     />
                 </form>
                 <br />
-
-                <JobList jobList={jobList} />
             </>
         );
     }

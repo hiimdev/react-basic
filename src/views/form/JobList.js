@@ -11,10 +11,13 @@ class JobList extends Component {
         });
     };
 
-    render() {
-        const { jobList } = this.props;
-        const { showJob } = this.state;
+    handleDeleteJob(job) {
+        this.props.deleteJob(job);
+    }
 
+    render() {
+        const { showJob } = this.state;
+        const { jobList } = this.props;
         return (
             <>
                 {showJob ? (
@@ -25,7 +28,14 @@ class JobList extends Component {
                         {jobList.map((item, index) => {
                             return (
                                 <div key={item.id}>
-                                    {item.title} - {item.salary}
+                                    {item.title} - {item.salary}$ &nbsp;
+                                    <span
+                                        onClick={() =>
+                                            this.handleDeleteJob(item)
+                                        }
+                                    >
+                                        x
+                                    </span>
                                 </div>
                             );
                         })}
